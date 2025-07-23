@@ -1,0 +1,13 @@
+<section class="section">
+
+  <h2>Don't hesitate creating your wonderful tasks</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+    <label for="title">Write your task:</label>
+    <input class="input" id="title" formControlName="title" type="text" placeholder="please write here your task">
+
+    <button class="button" type="submit">Submit</button>
+  </form>
+
+
+</section>

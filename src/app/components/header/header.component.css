@@ -2,6 +2,41 @@
   background-color: cyan;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &-wrap {
+    display: flex;
+  }
+
+}
+
+.wrap-link {
+  display: flex;
+  flex: 1;
+  margin: 0 10px;
+
+  .wrap-link__container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    width: 100%;
+  }
+
+}
+
+
 .logo {
   object-fit: contain;
+}
+
+.link {
+  color: rgb(13, 6, 231);
+  text-decoration: none;
+
+  &:hover {
+    color: rgb(91, 86, 225);
+  }
 }
