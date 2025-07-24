@@ -17,6 +17,7 @@ export class MainComponent {
 
 
 
+
   constructor() {
     this.apiService.getAllToDo()
       .subscribe(res => {
@@ -26,11 +27,8 @@ export class MainComponent {
   }
 
 
-  updateSelection(event: MatSelectionListChange) {
-    event.source.selectedOptions.selected.map(o => {
-      console.log(o.value)
-    });
-
+  changeStatus(task:ITask){
+    console.log(task)
   }
 
 

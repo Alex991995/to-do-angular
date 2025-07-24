@@ -1,11 +1,15 @@
 <section>
-  <mat-selection-list (selectionChange)="updateSelection($event)">
-    @for (task of arrayTasks; track task.id) {
-    <mat-list-option [value]="task">
-      {{task.todo}}
-    </mat-list-option>
-    }
-  </mat-selection-list>
+
+
+  <ul>
+      @for (task of arrayTasks; track task.id) {
+        <li>
+          <p>{{task.todo}}</p> 
+          <input type="checkbox" [checked]="task.completed" (change)="changeStatus(task)">
+
+        </li>
+      }
+  </ul>
 
 
 </section>
