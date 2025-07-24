@@ -1,11 +1,11 @@
 export interface ITaskCreate {
-  title: string;
-  completed: boolean
+  todo: string;
+  completed: boolean;
 }
 
 export interface ITask {
-  userId: number;
-  id: number;
-  title: string;
+  id: string;
+  todo: string;
   completed: boolean;
 }
+

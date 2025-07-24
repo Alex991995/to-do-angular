@@ -18,10 +18,10 @@ export class CreateTodoComponent {
   constructor(private router: Router) { }
 
   onSubmit() {
-    const title = this.form.value.title
-    if (title) {
-      this.apiService.addTask({ title, completed: false })
-        .subscribe(() => {
+    const todo = this.form.value.title
+    if (todo) {
+      this.apiService.addTask({ todo, completed: false })
+        .subscribe((res) => {
           this.router.navigate(['/'])
         })
     }

@@ -5,7 +5,7 @@ import { ITask } from 'app/interface';
 
 @Component({
   selector: 'app-main',
-  imports: [SlicePipe],
+  imports: [],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })
@@ -16,6 +16,7 @@ export class MainComponent {
   constructor() {
     this.apiService.getAllToDo()
       .subscribe(res => {
+        console.log(res)
         this.arrayTasks = res
       })
   }

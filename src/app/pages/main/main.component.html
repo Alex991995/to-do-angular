@@ -1,7 +1,7 @@
 <p>main works!</p>
 
 <ul>
-  @for (task of arrayTasks | slice:0:10; track task.id) {
-  <li>{{task.title}}</li>
+  @for (task of arrayTasks; track task.id) {
+  <li>{{task.todo}}</li>
   }
 </ul>
