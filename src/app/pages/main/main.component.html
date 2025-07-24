@@ -1,7 +1,11 @@
-<p>main works!</p>
+<section>
+  <mat-selection-list (selectionChange)="updateSelection($event)">
+    @for (task of arrayTasks; track task.id) {
+    <mat-list-option [value]="task">
+      {{task.todo}}
+    </mat-list-option>
+    }
+  </mat-selection-list>
 
-<ul>
-  @for (task of arrayTasks; track task.id) {
-  <li>{{task.todo}}</li>
-  }
-</ul>
+
+</section>
