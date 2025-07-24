@@ -15,21 +15,15 @@ export class MainComponent {
   apiService = inject(ApiService)
   arrayTasks: ITask[] = []
 
-
-
-
   constructor() {
     this.apiService.getAllToDo()
       .subscribe(res => {
-        console.log(res)
         this.arrayTasks = res
       })
   }
 
 
-  changeStatus(task:ITask){
-    console.log(task)
+  async changeStatus(task:ITask){
+    this.apiService.changeCompletion(task).subscribe()
   }
-
-
 }

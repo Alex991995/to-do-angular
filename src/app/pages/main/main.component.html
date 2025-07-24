@@ -1,15 +1,11 @@
 <section>
 
-
   <ul>
       @for (task of arrayTasks; track task.id) {
         <li>
           <p>{{task.todo}}</p> 
           <input type="checkbox" [checked]="task.completed" (change)="changeStatus(task)">
-
         </li>
       }
   </ul>
-
-
 </section>

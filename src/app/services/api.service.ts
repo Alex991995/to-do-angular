@@ -7,7 +7,6 @@ import { ITaskCreate, ITask } from 'app/interface';
 })
 export class ApiService {
   http = inject(HttpClient)
-  // baseURL = 'https://jsonplaceholder.typicode.com'
   baseURL = 'http://localhost:3000/todos'
 
 
@@ -15,11 +14,15 @@ export class ApiService {
     return this.http.get<ITask[]>(`${this.baseURL}`)
   }
 
-  // getAllToDo() {
-  //   return this.http.get<ITask[]>(`${this.baseURL}`)
-  // }
+  changeCompletion(task: ITask) {
+    return this.http.put(`${this.baseURL}/${task.id}`, { ...task, completed: !task.completed })
+  }
 
-  addTask(task:ITaskCreate){
-   return this.http.post(`${this.baseURL}`, task)
+  addTask(task: ITaskCreate) {
+    return this.http.post(`${this.baseURL}`, task)
+  }
+
+  getTaskByID(id: string) {
+    return this.http.get(`${this.baseURL}/${id}`)
   }
 }
