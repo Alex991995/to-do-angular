@@ -1,29 +1,49 @@
-
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { ITask } from 'app/interface';
-import { MatListModule, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
-
+import { MatIconModule } from '@angular/material/icon';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { ModalComponent } from '@common-ui/modal/modal.component';
 
 @Component({
   selector: 'app-main',
-  imports: [MatListModule,],
+  imports: [MatIconModule, MatDialogModule],
   templateUrl: './main.component.html',
-  styleUrl: './main.component.css'
+  styleUrl: './main.component.css',
 })
 export class MainComponent {
-  apiService = inject(ApiService)
-  arrayTasks: ITask[] = []
+  dialog = inject(MatDialog);
+  apiService = inject(ApiService);
+  arrayTasks: ITask[] = [];
 
   constructor() {
-    this.apiService.getAllToDo()
-      .subscribe(res => {
-        this.arrayTasks = res
-      })
+    this.fetchTasks();
   }
 
+  openModal(id: string) {
+    let dialogRef = this.dialog.open(ModalComponent, {
+      width: '350px',
+      data: id,
+    });
 
-  async changeStatus(task:ITask){
-    this.apiService.changeCompletion(task).subscribe()
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchTasks();
+    });
+  }
+
+  async changeStatus(task: ITask) {
+    this.apiService.changeCompletion(task).subscribe(() => {
+      this.fetchTasks();
+    });
+  }
+
+  fetchTasks() {
+    this.apiService.getAllToDo().subscribe((res) => {
+      this.arrayTasks = res;
+    });
   }
 }

@@ -4,21 +4,6 @@
       "id": "52d2",
       "todo": "Do something nice for someone I care about",
       "completed": true
-    },
-    {
-      "id": "3efa",
-      "todo": "create",
-      "completed": false
-    },
-    {
-      "id": "59d2",
-      "todo": "again",
-      "completed": true
-    },
-    {
-      "id": "4eb0",
-      "todo": "cool",
-      "completed": false
     }
   ]
 }

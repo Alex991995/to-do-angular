@@ -1,11 +1,22 @@
-<section>
+<section class="section">
+  <ul class="list">
+    @for (task of arrayTasks; track task.id) {
+    <li class="item">
+      <p [class.completed]="task.completed">
+        {{ task.todo }}
+      </p>
+      <div class="wrap-icons">
+        <input
+          type="checkbox"
+          [checked]="task.completed"
+          (change)="changeStatus(task)"
+        />
 
-  <ul>
-      @for (task of arrayTasks; track task.id) {
-        <li>
-          <p>{{task.todo}}</p> 
-          <input type="checkbox" [checked]="task.completed" (change)="changeStatus(task)">
-        </li>
-      }
+        <button class="transparent-button" (click)="openModal(task.id)">
+          <mat-icon color="green">delete</mat-icon>
+        </button>
+      </div>
+    </li>
+    }
   </ul>
 </section>

@@ -1,0 +1,28 @@
+.section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.wrap-icons {
+  display: flex;
+  align-items: center;
+}
+
+.transparent-button {
+  background-color: transparent;
+  border: none;
+}
