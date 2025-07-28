@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ITaskCreate, ITask } from 'app/interface';
+import { ITask, ITaskCreate } from '@interface/index';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  http = inject(HttpClient);
-  baseURL = 'http://localhost:3000/todos';
+  private http = inject(HttpClient);
+  private baseURL = 'http://localhost:3000/todos';
 
   getAllToDo() {
     return this.http.get<ITask[]>(`${this.baseURL}`);

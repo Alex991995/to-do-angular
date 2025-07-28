@@ -1,23 +1,25 @@
 import { Routes } from '@angular/router';
-import { MainComponent } from './pages/main/main.component';
-import { LayoutComponent } from '@common-ui/layout/layout.component';
-import { CreateTodoComponent } from '@pages/create-to-do/create-to-do.component';
-
 
 export const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
+    loadComponent: () =>
+      import('app/layout/layout.component').then((m) => m.LayoutComponent),
     children: [
       {
         path: '',
-        component: MainComponent
+        loadComponent: () =>
+          import('@pages/list-to-do/list-to-do.component').then(
+            (m) => m.ListToDOComponent
+          ),
       },
       {
-        path: "create",
-        component: CreateTodoComponent
-      }
-    ]
-  }
-
+        path: 'create',
+        loadComponent: () =>
+          import('@pages/create-to-do/create-to-do.component').then(
+            (m) => m.CreateTodoComponent
+          ),
+      },
+    ],
+  },
 ];

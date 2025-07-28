@@ -4,7 +4,7 @@ import {
   MatDialogRef,
   MatDialogModule,
 } from '@angular/material/dialog';
-import { ApiService } from '@services/api.service';
+import { ApiService } from '@core/services/api.service';
 
 @Component({
   selector: 'app-modal',
@@ -13,8 +13,8 @@ import { ApiService } from '@services/api.service';
   styleUrl: './modal.component.css',
 })
 export class ModalComponent {
-  id: string;
-  apiService = inject(ApiService);
+  private id: string;
+  private apiService = inject(ApiService);
   constructor(
     public dialogRef: MatDialogRef<ModalComponent>,
     @Inject(MAT_DIALOG_DATA) data: string

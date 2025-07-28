@@ -1,30 +1,38 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ApiService } from '@services/api.service';
-import { Router } from "@angular/router";
+import { Component, DestroyRef, inject } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ApiService } from '@core/services/api.service';
+import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-to-do',
   imports: [ReactiveFormsModule],
   templateUrl: './create-to-do.component.html',
-  styleUrl: './create-to-do.component.css'
+  styleUrl: './create-to-do.component.css',
 })
 export class CreateTodoComponent {
-  apiService = inject(ApiService)
-  form = new FormGroup({
+  private apiService = inject(ApiService);
+  protected form = new FormGroup({
     title: new FormControl('', Validators.required),
-  })
+  });
+  private destroyRef = inject(DestroyRef);
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   onSubmit() {
-    const todo = this.form.value.title
+    const todo = this.form.value.title;
     if (todo) {
-      this.apiService.addTask({ todo, completed: false })
+      this.apiService
+        .addTask({ todo, completed: false })
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((res) => {
-          this.router.navigate(['/'])
-        })
+          this.router.navigate(['/']);
+        });
     }
-
   }
 }

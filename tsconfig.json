@@ -17,18 +17,24 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-
     "baseUrl": "./src",
     "paths": {
-      "@core/*": ["app/core/*"],
-      "@shared/*": ["app/shared/*"],
-      "@common-ui/*": ["app/common-ui/*"],
-      "@components/*": ["app/components/*"],
-      "@pages/*": ["app/pages/*"],
-      "@services/*": ["app/services/*"],
-
+      "@core/services/*": [
+        "app/core/services/*"
+      ],
+      "@components/*": [
+        "app/shared/components/*"
+      ],
+      "@pages/*": [
+        "app/pages/*"
+      ],
+      "@services/*": [
+        "app/core/services/*"
+      ],
+      "@interface/*": [
+        "app/shared/interface/*"
+      ],
     }
-
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -36,5 +42,4 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-
 }
