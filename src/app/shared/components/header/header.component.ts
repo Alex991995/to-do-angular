@@ -9,5 +9,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  protected logoPath = '/assets/bird.png';
+  protected readonly logoPath = '/assets/bird.png';
 }
