@@ -24,7 +24,7 @@ export class ListToDOComponent {
 
   openModal(id: string) {
     let dialogRef = this.dialog.open(ModalComponent, {
-      width: '350px',
+      width: '450px',
       data: id,
     });
 
