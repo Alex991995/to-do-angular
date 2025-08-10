@@ -1,4 +1,5 @@
 <section class="section">
+  <app-input (title)="handleData($event)" class="input-wrapper"></app-input>
   <ul class="list">
     @for (task of arrayTasks; track task.id) {
     <li class="item">
