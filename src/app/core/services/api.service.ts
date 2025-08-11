@@ -9,8 +9,8 @@ export class ApiService {
   private http = inject(HttpClient);
   private baseURL = 'http://localhost:3000/todos';
 
-  getAllToDo() {
-    return this.http.get<ITask[]>(`${this.baseURL}`);
+  getAllToDo(value: string | undefined) {
+    return this.http.get<ITask[]>(`${this.baseURL}?todo_like=${value}`);
   }
 
   changeCompletion(task: ITask) {
