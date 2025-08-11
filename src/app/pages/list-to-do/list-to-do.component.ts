@@ -1,23 +1,17 @@
-import {
-  Component,
-  DestroyRef,
-  effect,
-  inject,
-  OnDestroy,
-  signal,
-} from '@angular/core';
+import { Component, DestroyRef, inject, input, signal } from '@angular/core';
 import { ApiService } from '@core/services/api.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModalComponent } from '@components/modal/modal.component';
 import { ITask } from '@interface/index';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { InputComponent } from '@components/input/input.component';
-import { map } from 'rxjs';
+import { FilterPipe } from 'app/shared/pipes/filter.pipe';
+import { BehaviorSubject, debounceTime, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-list-to-do',
-  imports: [MatIconModule, MatDialogModule, InputComponent],
+  imports: [MatIconModule, MatDialogModule, InputComponent, FilterPipe],
   templateUrl: './list-to-do.component.html',
   styleUrl: './list-to-do.component.css',
 })
@@ -27,15 +21,15 @@ export class ListToDOComponent {
   private destroyRef = inject(DestroyRef);
 
   protected arrayTasks: ITask[] = [];
-  private outputValue = signal<string | undefined>(undefined);
+  protected inputSignal = signal<string>('');
+  valueInput$ = toObservable(this.inputSignal);
 
   constructor() {
     this.fetchTasks();
   }
 
   protected handleData(title: string) {
-    this.outputValue.set(title);
-    this.fetchTasks();
+    this.inputSignal.set(title);
   }
 
   protected openModal(id: string) {
@@ -62,23 +56,17 @@ export class ListToDOComponent {
   }
 
   private fetchTasks() {
-    this.apiService
-      .getAllToDo()
+    this.valueInput$
       .pipe(
-        map((array) => this.filterArrayTasksIfValueExist(array)),
-        takeUntilDestroyed(this.destroyRef)
+        debounceTime(500),
+        switchMap((v) =>
+          this.apiService
+            .getAllToDo(v)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+        )
       )
       .subscribe((res) => {
         this.arrayTasks = res;
       });
-  }
-
-  private filterArrayTasksIfValueExist(arrayTasks: ITask[]) {
-    const value = this.outputValue();
-    if (value) {
-      return arrayTasks.filter((item) => item.todo.startsWith(value));
-    } else {
-      return arrayTasks;
-    }
   }
 }

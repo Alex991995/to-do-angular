@@ -13,7 +13,7 @@ export class InputComponent {
 
   constructor() {}
 
-  handleClick() {
+  onChildValueChange() {
     this.title.emit(this.value);
   }
 }
