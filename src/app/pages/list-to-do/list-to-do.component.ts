@@ -37,7 +37,7 @@ export class ListToDOComponent {
 
   protected arrayTasks = signal<ITask[]>([]);
   protected inputSignal = signal<string>('');
-  valueInput$ = toObservable(this.inputSignal);
+  protected valueInput$ = toObservable(this.inputSignal);
 
   constructor() {
     this.valueInput$

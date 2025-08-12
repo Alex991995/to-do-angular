@@ -12,8 +12,13 @@
     },
     {
       "todo": "wash",
-      "completed": true,
+      "completed": false,
       "id": "MUQ-16-"
+    },
+    {
+      "todo": "see",
+      "completed": false,
+      "id": "SpJT-VC"
     }
   ]
 }
