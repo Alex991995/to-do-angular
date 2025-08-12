@@ -1,14 +1,15 @@
 <section class="section">
   <app-input (title)="handleData($event)" class="input-wrapper"></app-input>
+  @if( arrayTasks().length){
   <ul class="list">
-    @for (task of arrayTasks; track task.id) {
+    @for (task of arrayTasks(); track task.id) {
+
     <li class="item">
       <p [class.completed]="task.completed">
         {{ task.todo }}
       </p>
       <div class="wrap-icons">
-        <input
-          type="checkbox"
+        <mat-checkbox
           [checked]="task.completed"
           (change)="changeStatus(task)"
         />
@@ -20,4 +21,7 @@
     </li>
     }
   </ul>
+  } @else {
+  <p class="text-center mt-2">There are not any tasks</p>
+  }
 </section>
