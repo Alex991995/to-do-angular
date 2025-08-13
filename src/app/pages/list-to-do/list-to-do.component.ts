@@ -6,23 +6,18 @@ import { ModalComponent } from '@components/modal/modal.component';
 import { ITask } from '@interface/index';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { InputComponent } from '@components/input/input.component';
-import { FilterPipe } from 'app/shared/pipes/filter.pipe';
 import {
-  BehaviorSubject,
   catchError,
   debounce,
-  debounceTime,
-  map,
-  Observable,
   of,
   startWith,
   switchMap,
-  tap,
   throwError,
   timer,
 } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-to-do',
@@ -38,17 +33,24 @@ export class ListToDOComponent {
   protected arrayTasks = signal<ITask[]>([]);
   protected inputSignal = signal<string>('');
   protected valueInput$ = toObservable(this.inputSignal);
+  private router = inject(Router);
 
   constructor() {
     this.valueInput$
       .pipe(
         debounce((v) => (v ? timer(500) : of(null))),
         switchMap((v) => this.fetchTasks(v)),
+        catchError(this.handleError),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: (res) => this.arrayTasks.set(res),
-        error: (err) => console.log(err),
+        error: (err) => {
+          console.log(err);
+          this.router.navigate(['/error-page'], {
+            state: { error: err },
+          });
+        },
       });
   }
 
@@ -62,7 +64,13 @@ export class ListToDOComponent {
       data: id,
     });
 
-    dialogRef.afterClosed().subscribe();
+    dialogRef
+      .afterClosed()
+      .pipe(
+        switchMap(() => this.fetchTasks(this.inputSignal())),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((res) => this.arrayTasks.set(res));
   }
 
   protected changeStatus(task: ITask) {
@@ -76,7 +84,7 @@ export class ListToDOComponent {
   }
 
   handleError(err: HttpErrorResponse) {
-    return throwError(() => new Error(err.statusText));
+    return throwError(() => new Error(err.message));
   }
 
   private fetchTasks(v: string) {

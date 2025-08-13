@@ -1,24 +1,9 @@
 {
   "todos": [
     {
-      "id": "52d2",
-      "todo": "Do something nice for someone I care about",
-      "completed": false
-    },
-    {
-      "todo": "find",
+      "todo": "d",
       "completed": false,
-      "id": "8tSktUR"
-    },
-    {
-      "todo": "wash",
-      "completed": false,
-      "id": "MUQ-16-"
-    },
-    {
-      "todo": "see",
-      "completed": false,
-      "id": "SpJT-VC"
+      "id": 1
     }
   ]
 }

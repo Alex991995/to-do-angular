@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ErrorPageComponent } from '@pages/error-page/error-page.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@pages/create-to-do/create-to-do.component').then(
             (m) => m.CreateTodoComponent
+          ),
+      },
+      {
+        path: 'error-page',
+        loadComponent: () =>
+          import('@pages/error-page/error-page.component').then(
+            (m) => m.ErrorPageComponent
           ),
       },
     ],

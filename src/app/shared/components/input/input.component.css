@@ -1,7 +1,10 @@
-
 .container {
   position: relative;
-  background: linear-gradient(135deg, rgb(179, 208, 253) 0%, rgb(164, 202, 248) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(179, 208, 253) 0%,
+    rgb(164, 202, 248) 100%
+  );
   border-radius: 1000px;
   padding: 10px;
   display: grid;
@@ -10,8 +13,6 @@
   max-width: 300px;
   margin: 0 10px;
 }
-
-
 
 .input {
   width: 100%;
@@ -36,4 +37,8 @@
 
 .input:focus {
   border: 2px solid grey;
+}
+
+input::placeholder {
+  color: rgb(176, 173, 173);
 }

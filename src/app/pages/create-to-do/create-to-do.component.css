@@ -20,11 +20,15 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  background-color: white;
+  &::placeholder {
+    color: rgb(176, 173, 173);
+  }
 }
 
 .button {
   width: 100%;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
