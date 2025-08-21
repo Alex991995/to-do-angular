@@ -34,6 +34,9 @@
       "@interface/*": [
         "app/shared/interface/*"
       ],
+      "@helpers/*": [
+        "app/shared/helpers/*"
+      ],
     }
   },
   "angularCompilerOptions": {

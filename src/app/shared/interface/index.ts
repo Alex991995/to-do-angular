@@ -9,3 +9,14 @@ export interface ITask {
   completed: boolean;
 }
 
+export interface ICountry {
+  [key: string]: string | undefined;
+}
+
+export interface Country {
+  name: string;
+  code: string;
+  iso: string;
+  flag: string;
+  mask: string;
+}

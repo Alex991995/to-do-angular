@@ -1,13 +1,17 @@
-<section class="section">
-
+<section class="section d-flex flex-column align-items-center mt-5">
   <h2>Don't hesitate creating your wonderful tasks</h2>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
     <label for="title">Write your task:</label>
-    <input class="input" id="title" formControlName="title" type="text" placeholder="please write here your task">
 
-    <button class="button" type="submit">Submit</button>
+    <input
+      type="text"
+      class="form-control input"
+      placeholder="please write here your task"
+      aria-label="Username"
+      aria-describedby="basic-addon1"
+    />
+
+    <button class="btn btn-primary w-100" type="submit">Submit</button>
   </form>
-
-
 </section>

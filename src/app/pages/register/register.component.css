@@ -1,0 +1,14 @@
+.box-input__phone {
+  position: relative;
+  .input__phone {
+    padding-left: 80px;
+  }
+  & .wrapper {
+    display: flex;
+    gap: 3px;
+    position: absolute;
+    top: 39px;
+    left: 10px;
+    width: 30px;
+  }
+}

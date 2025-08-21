@@ -8,10 +8,11 @@ import {
 import { ApiService } from '@core/services/api.service';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-create-to-do',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgbDropdownModule],
   templateUrl: './create-to-do.component.html',
   styleUrl: './create-to-do.component.css',
 })

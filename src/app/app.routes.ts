@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { ErrorPageComponent } from '@pages/error-page/error-page.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +25,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@pages/error-page/error-page.component').then(
             (m) => m.ErrorPageComponent
+          ),
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('@pages/register/register.component').then(
+            (m) => m.RegisterComponent
           ),
       },
     ],

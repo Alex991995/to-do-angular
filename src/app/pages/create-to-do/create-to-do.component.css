@@ -1,9 +1,9 @@
-.section {
+/* .section {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-}
+} */
 
 .form {
   border-radius: 5px;

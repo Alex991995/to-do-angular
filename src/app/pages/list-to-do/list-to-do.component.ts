@@ -12,12 +12,14 @@ import {
   of,
   startWith,
   switchMap,
+  tap,
   throwError,
   timer,
 } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
+import { watch } from 'rxjs-watcher';
 
 @Component({
   selector: 'app-list-to-do',
@@ -38,10 +40,12 @@ export class ListToDOComponent {
   constructor() {
     this.valueInput$
       .pipe(
+        watch('see'),
         debounce((v) => (v ? timer(500) : of(null))),
         switchMap((v) => this.fetchTasks(v)),
         catchError(this.handleError),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
+        watch('see')
       )
       .subscribe({
         next: (res) => this.arrayTasks.set(res),
