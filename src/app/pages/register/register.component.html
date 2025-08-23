@@ -1,105 +1,176 @@
 <section class="container">
-  <!-- <mat-stepper [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="mainData"> -->
-  <form (ngSubmit)="onSubmit()" [formGroup]="mainData">
-    <!-- <ng-template matStepLabel>Fill out your name</ng-template> -->
-    <div class="mb-3">
-      <label for="email" class="form-label">Email address</label>
-      <input
-        formControlName="email"
-        type="email"
-        class="form-control"
-        id="email"
-      />
-      <div id="email" class="form-text h-2 text-danger">
-        @if(isValidEmail){invalid email}
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="name" class="form-label">Name</label>
-      <input
-        formControlName="name"
-        type="name"
-        class="form-control"
-        id="name"
-        aria-describedby="name"
-      />
+  <mat-stepper headerPosition="bottom" #stepper linear>
+    <!-- <mat-step [stepControl]="mainData">
+      <form (ngSubmit)="onSubmit()" [formGroup]="mainData" class="d-flex flex-column">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            formControlName="email"
+            type="email"
+            class="form-control"
+            id="email"
+          />
+          <div id="email" class="form-text h-2 text-danger">
+            @if(isValidEmail){invalid email}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            formControlName="name"
+            type="name"
+            class="form-control"
+            id="name"
+            aria-describedby="name"
+          />
 
-      <div id="name" class="form-text h-2 text-danger">
-        @if(isValidName){should be more than one symbol}
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="country" class="form-label">Country</label>
-      <select
-        name="country"
-        id="country"
-        formControlName="country"
-        (change)="changeCountry()"
-        class="form-select"
-      >
-        <option
-          *ngFor="let country of countries"
-          [value]="country.name"
-          class="option"
+          <div id="name" class="form-text h-2 text-danger">
+            @if(isValidName){should be more than one symbol}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="country" class="form-label">Country</label>
+          <select
+            name="country"
+            id="country"
+            formControlName="country"
+            (change)="changeCountry()"
+            class="form-select"
+          >
+            <option
+              *ngFor="let country of countries"
+              [value]="country.name"
+              class="option"
+            >
+              {{ country.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3 box box-input__phone">
+          @if(phoneMaskCountry()){
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            formControlName="phone"
+            [mask]="phoneMaskCountry()"
+            class="form-control input__phone"
+          />
+          <div class="wrapper">
+            <img [src]="chosenCountry()?.flag" alt="flag" />
+            <span>{{ chosenCountry()?.code }}</span>
+          </div>
+          }
+        </div>
+        <button
+          matStepperNext
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="isDisabledMainData"
         >
-          {{ country.name }}
-        </option>
-      </select>
-    </div>
+          Next
+        </button>
+      </form>
+    </mat-step> -->
+    <mat-step [stepControl]="additional">
+      <form [formGroup]="additional" class="d-flex flex-column">
+        <div class="mb-3">
+          <label for="country" class="form-label">Country</label>
+          <input
+            formControlName="country"
+            type="text"
+            class="form-control"
+            id="country"
+          />
+          <div id="country" class="form-text h-2 text-danger">
+            @if(isValidCity){invalid input}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="city" class="form-label">Сity</label>
+          <input
+            formControlName="city"
+            type="text"
+            class="form-control"
+            id="city"
+          />
+          <div id="city" class="form-text h-2 text-danger">
+            @if(isValidCity){invalid input}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="street" class="form-label">Street</label>
+          <input
+            formControlName="street"
+            type="text"
+            class="form-control"
+            id="street"
+          />
+          <div id="city" class="form-text h-2 text-danger">
+            @if(isValidStreet){invalid input}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="sex" class="form-label">Sex</label>
+          <select name="sex" id="sex" formControlName="sex" class="form-select">
+            <option value="male">male</option>
+            <option value="female">female</option>
+          </select>
+        </div>
 
-    <div class="mb-3 box box-input__phone">
-      @if(phoneMaskCountry()){
-      <label for="name" class="form-label">Name</label>
-      <input
-        type="text"
-        formControlName="phone"
-        [mask]="phoneMaskCountry()"
-        class="form-control input__phone"
-      />
-      <div class="wrapper">
-        <img [src]="chosenCountry()?.flag" alt="flag" />
-        <span>{{ chosenCountry()?.code }}</span>
-      </div>
-      <div id="name" class="form-text h-2 text-danger">
-        @if(isValidName){should be more than one symbol}
-      </div>
-      }
-    </div>
+        <mat-form-field>
+          <mat-label>Select the date of birth</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="date"
+            [max]="maxDate()"
+            (dateChange)="dateChangeEvent($event)"
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        @if(!isAdult()){
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            formControlName="email"
+            type="email"
+            class="form-control"
+            id="email"
+          />
+          <!-- <div id="email" class="form-text h-2 text-danger">
+            @if(isValidEmail){invalid email}
+          </div> -->
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            formControlName="name"
+            type="name"
+            class="form-control"
+            id="name"
+            aria-describedby="name"
+          />
 
-    <div>
-      <button class="btn btn-primary" type="submit" [disabled]="isDisabled()">
-        Next
-      </button>
-      <!-- <button matButton matStepperNext>Next</button> -->
-      <!-- <button matStepperNext class="btn btn-primary">Next</button> -->
-    </div>
-  </form>
-  <!-- </mat-step> -->
-  <!-- <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
-    <form [formGroup]="secondFormGroup">
-      <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input
-          matInput
-          formControlName="secondCtrl"
-          placeholder="Ex. 1 Main St, New York, NY"
-          required
-        />
-      </mat-form-field>
-      <div>
-        <button matButton matStepperPrevious>Back</button>
-        <button matButton matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step> -->
-  <!-- <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
-      <div>
-        <button matButton matStepperPrevious>Back</button>
-        <button matButton (click)="stepper.reset()">Reset</button>
-      </div>
+          <!-- <div id="name" class="form-text h-2 text-danger">
+            @if(isValidName){should be more than one symbol}
+          </div> -->
+        </div>
+        }
+        <button
+          matStepperNext
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="isDisabledAdditional"
+        >
+          Next
+        </button>
+      </form>
     </mat-step>
-  </mat-stepper> -->
+  </mat-stepper>
 </section>

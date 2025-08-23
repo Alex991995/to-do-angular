@@ -1,11 +1,21 @@
 import { NgFor } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
 import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  Signal,
+  signal,
+} from '@angular/core';
+import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
   NgModel,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -16,6 +26,22 @@ import countries from 'countries-phone-masks';
 import { NgOptimizedImage } from '@angular/common';
 import { convertPhoneMask } from '@helpers/convert-phone-mask';
 import { Country } from '@interface/index';
+import {
+  MatDatepickerInputEvent,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import {
+  MatFormFieldControl,
+  MatFormFieldModule,
+} from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import { isAdultFn } from '@helpers/validate-birth-date';
 
 @Component({
   selector: 'app-register',
@@ -26,35 +52,68 @@ import { Country } from '@interface/index';
     NgFor,
     NgxMaskDirective,
     NgOptimizedImage,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
-  providers: [provideNgxMask()],
+  providers: [provideNgxMask(), provideNativeDateAdapter()],
 })
 export class RegisterComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
-  protected isDisabled = signal(true);
   protected countryNames = signal(getCountries());
   protected countries = countries;
   protected chosenCountry = signal<Country | undefined>(undefined);
-  phoneMaskCountry = signal<string>('');
+  protected phoneMaskCountry = signal<string>('');
+  protected maxDate = signal(new Date());
+  protected isAdult = signal(true);
 
-  mainData = this._formBuilder.nonNullable.group({
+  protected mainData = this._formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
-    name: ['', [Validators.required, Validators.minLength(2)]],
+    name: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.pattern('^[a-zA-Z0-9]+$'),
+      ],
+    ],
     country: ['', [Validators.required]],
-    phone: ['', [Validators.required]],
+    phone: [''],
   });
 
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
+  protected additional = this._formBuilder.nonNullable.group({
+    country: [this.chosenCountry() || '', [Validators.required]],
+    city: ['', [Validators.required]],
+    street: ['', [Validators.required]],
+    date: [
+      '',
+      [Validators.required, this.customPasswordValidator(this.isAdult)],
+    ],
+    sex: ['', [Validators.required]],
+    email: ['', [Validators.email]],
+    name: ['', [Validators.minLength(2), Validators.pattern('^[a-zA-Z0-9]+$')]],
   });
-  isLinear = false;
+
+  customPasswordValidator(isAdult: Signal<boolean>) {
+    return (control: AbstractControl) => {
+      if (isAdult() === false) {
+        this.additional.get('email')?.setValidators([Validators.required]);
+        this.additional.get('name')?.setValidators([Validators.required]);
+      }
+    };
+  }
 
   ngOnInit() {
-    this.mainData.valueChanges.subscribe((res) => {
-      this.isDisabled.set(!this.mainData.valid);
-    });
+    // this.mainData.valueChanges.subscribe((res) => {});
+    // this.additional.valueChanges.subscribe((res) => {});
+  }
+  dateChangeEvent(event: MatDatepickerInputEvent<Date>) {
+    if (event.value) {
+      this.isAdult.set(isAdultFn(event.value));
+      this.additional.get('date')?.updateValueAndValidity();
+    }
   }
   changeCountry() {
     this.mainData.controls.phone.reset();
@@ -64,9 +123,8 @@ export class RegisterComponent implements OnInit {
 
     if (country) {
       this.chosenCountry.set(country);
-
+      this.additional.controls.country.setValue(country.name);
       const mask = convertPhoneMask(country);
-      console.log(mask);
       this.phoneMaskCountry.set(mask);
     }
   }
@@ -85,6 +143,29 @@ export class RegisterComponent implements OnInit {
       this.mainData.controls.email.dirty &&
       this.mainData.controls.email.invalid
     );
+  }
+
+  get isValidCity() {
+    return (
+      this.additional.controls.city.touched &&
+      this.additional.controls.city.dirty &&
+      this.additional.controls.city.invalid
+    );
+  }
+  get isValidStreet() {
+    return (
+      this.additional.controls.street.touched &&
+      this.additional.controls.street.dirty &&
+      this.additional.controls.street.invalid
+    );
+  }
+
+  get isDisabledMainData() {
+    return this.mainData.invalid;
+  }
+
+  get isDisabledAdditional() {
+    return this.additional.invalid;
   }
 
   onSubmit() {

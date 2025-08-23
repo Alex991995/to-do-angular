@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+.mat-step-header {
+  flex: 0;
+}
+
 html,
 body {
   height: 100%;
