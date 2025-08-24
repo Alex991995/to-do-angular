@@ -6,10 +6,13 @@ import {
   OnInit,
   Signal,
   signal,
+  ViewChild,
 } from '@angular/core';
 import {
   AbstractControl,
+  FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   NgModel,
@@ -18,7 +21,11 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { MatStepperModule } from '@angular/material/stepper';
+import {
+  MatStep,
+  MatStepper,
+  MatStepperModule,
+} from '@angular/material/stepper';
 import { getCountries } from '@helpers/getNameCountries';
 import { tap } from 'rxjs';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
@@ -36,11 +43,6 @@ import {
   MatFormFieldModule,
 } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
 import { isAdultFn } from '@helpers/validate-birth-date';
 
 @Component({
@@ -68,6 +70,7 @@ export class RegisterComponent implements OnInit {
   protected phoneMaskCountry = signal<string>('');
   protected maxDate = signal(new Date());
   protected isAdult = signal(true);
+  @ViewChild('step2') step2!: MatStep;
 
   protected mainData = this._formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -96,6 +99,15 @@ export class RegisterComponent implements OnInit {
     name: ['', [Validators.minLength(2), Validators.pattern('^[a-zA-Z0-9]+$')]],
   });
 
+  checkbox = new FormArray([
+    new FormControl(false, Validators.requiredTrue),
+    new FormControl(false, Validators.requiredTrue),
+    new FormControl(false),
+  ]);
+  serviceRulesFormGroup = new FormGroup({
+    serviceRules: this.checkbox,
+  });
+
   customPasswordValidator(isAdult: Signal<boolean>) {
     return (control: AbstractControl) => {
       if (isAdult() === false) {
@@ -105,8 +117,19 @@ export class RegisterComponent implements OnInit {
     };
   }
 
+  skipStep(stepper: MatStepper) {
+    this.step2.editable = false;
+    this.step2.completed = true;
+    stepper.selectedIndex += 2;
+  }
+
   ngOnInit() {
-    // this.mainData.valueChanges.subscribe((res) => {});
+    this.serviceRulesFormGroup.valueChanges.subscribe((res) => {
+      console.log(this.serviceRulesFormGroup.valid);
+    });
+    this.additional.valueChanges.subscribe((res) => {
+      console.log(this.additional.valid);
+    });
     // this.additional.valueChanges.subscribe((res) => {});
   }
   dateChangeEvent(event: MatDatepickerInputEvent<Date>) {
@@ -128,6 +151,10 @@ export class RegisterComponent implements OnInit {
       this.phoneMaskCountry.set(mask);
     }
   }
+
+  // get isCompleted(){
+  //   require ()
+  // }
 
   get isValidName() {
     return (

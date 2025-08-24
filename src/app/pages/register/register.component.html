@@ -1,7 +1,25 @@
-<section class="container">
+<section class="container d-flex justify-content-center">
   <mat-stepper headerPosition="bottom" #stepper linear>
-    <!-- <mat-step [stepControl]="mainData">
-      <form (ngSubmit)="onSubmit()" [formGroup]="mainData" class="d-flex flex-column">
+    <mat-step>
+      <div class="d-flex flex-column gap-2">
+        <button matStepperNext class="btn btn-primary" type="submit">
+          Enter by email
+        </button>
+        <button
+          class="btn btn-success"
+          type="submit"
+          (click)="skipStep(stepper)"
+        >
+          Enter by gmail
+        </button>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="mainData" #step2>
+      <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="mainData"
+        class="d-flex flex-column"
+      >
         <div class="mb-3">
           <label for="email" class="form-label">Email address</label>
           <input
@@ -71,7 +89,7 @@
           Next
         </button>
       </form>
-    </mat-step> -->
+    </mat-step>
     <mat-step [stepControl]="additional">
       <form [formGroup]="additional" class="d-flex flex-column">
         <div class="mb-3">
@@ -170,6 +188,56 @@
         >
           Next
         </button>
+      </form>
+    </mat-step>
+
+    <mat-step>
+      <form [formGroup]="serviceRulesFormGroup">
+        <div formArrayName="serviceRules">
+          <div class="form-check">
+            <input
+              formControlName="0"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="agreement"
+            />
+            <label class="form-check-label" for="agreement">
+              I accept the terms of the user agreement
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              formControlName="1"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="personaldata"
+            />
+            <label class="form-check-label" for="personaldata">
+              I agree to the processing of personal data
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              formControlName="2"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="subscribe"
+            />
+            <label class="form-check-label" for="subscribe">
+              Subscribe to the newsletter
+            </label>
+          </div>
+          <button
+            class="btn btn-success"
+            type="submit"
+            [disabled]="serviceRulesFormGroup.invalid"
+          >
+            Complete registration
+          </button>
+        </div>
       </form>
     </mat-step>
   </mat-stepper>
