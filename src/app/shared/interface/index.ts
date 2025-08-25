@@ -20,3 +20,33 @@ export interface Country {
   flag: string;
   mask: string;
 }
+
+export interface IMainData {
+  country: string;
+  email: string;
+  name: string;
+  phone: string;
+}
+
+export interface IAdditionalData {
+  country: string;
+  city: string;
+  street: string;
+  date: string;
+  sex: string;
+  email: string;
+  name: string;
+}
+
+export interface IBody {
+  country: string;
+  email: string;
+  name: string;
+  phone: string;
+  city: string;
+  street: string;
+  date: string;
+  sex: string;
+  emailAdult: string | null;
+  nameAdult: string | null;
+}

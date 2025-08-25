@@ -6,20 +6,33 @@
           Enter by email
         </button>
         <button
-          class="btn btn-success"
+          class="btn btn-outline-secondary"
           type="submit"
           (click)="skipStep(stepper)"
         >
-          Enter by gmail
+          Enter by
+          <fa-icon [icon]="faFacebook" />
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          type="submit"
+          (click)="skipStep(stepper)"
+        >
+          Enter by
+          <fa-icon [icon]="faGoogle" />
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          type="submit"
+          (click)="skipStep(stepper)"
+        >
+          Enter by
+          <fa-icon [icon]="faGithub" />
         </button>
       </div>
     </mat-step>
     <mat-step [stepControl]="mainData" #step2>
-      <form
-        (ngSubmit)="onSubmit()"
-        [formGroup]="mainData"
-        class="d-flex flex-column"
-      >
+      <form [formGroup]="mainData" class="d-flex flex-column">
         <div class="mb-3">
           <label for="email" class="form-label">Email address</label>
           <input
@@ -100,9 +113,6 @@
             class="form-control"
             id="country"
           />
-          <div id="country" class="form-text h-2 text-danger">
-            @if(isValidCity){invalid input}
-          </div>
         </div>
         <div class="mb-3">
           <label for="city" class="form-label">Сity</label>
@@ -161,9 +171,9 @@
             class="form-control"
             id="email"
           />
-          <!-- <div id="email" class="form-text h-2 text-danger">
-            @if(isValidEmail){invalid email}
-          </div> -->
+          <div id="email" class="form-text h-2 text-danger">
+            @if(isValidEmailForAdult){invalid email}
+          </div>
         </div>
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
@@ -175,9 +185,9 @@
             aria-describedby="name"
           />
 
-          <!-- <div id="name" class="form-text h-2 text-danger">
-            @if(isValidName){should be more than one symbol}
-          </div> -->
+          <div id="name" class="form-text h-2 text-danger">
+            @if(isValidNameForAdult){should be more than one symbol}
+          </div>
         </div>
         }
         <button
@@ -192,7 +202,7 @@
     </mat-step>
 
     <mat-step>
-      <form [formGroup]="serviceRulesFormGroup">
+      <form [formGroup]="serviceRulesFormGroup" (ngSubmit)="onSubmit()">
         <div formArrayName="serviceRules">
           <div class="form-check">
             <input

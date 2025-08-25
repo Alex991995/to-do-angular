@@ -1,5 +1,3 @@
-import { ICountry } from '@interface/index';
-
 export function getCountries(lang = 'en') {
   const A = 65;
   const Z = 90;
